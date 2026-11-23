@@ -393,20 +393,28 @@ export default function AccountRecovery({
               >
                 ←
               </button>
-              <img
-                className="warning icon"
-                aria-hidden="true"
-                style={
-                  alertIcon
-                    ? { backgroundImage: `url("${alertIcon}")` }
-                    : undefined
-                }
-                
-              />
+              {dialogView !== "default" && alertIcon ? (
+                <img
+                  className="warning icon"
+                  src={alertIcon}
+                  alt=""
+                  aria-hidden="true"
+                />
+              ) : null}
             </div>
             {dialogView === "default" ? (
               <section className="default-view view display">
-                <h3 className="title">{content.landingHeading}</h3>
+                <h3 className="title dialog-title-row">
+                  {alertIcon ? (
+                    <img
+                      className="warning icon"
+                      src={alertIcon}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  ) : null}
+                  <span>{content.landingHeading}</span>
+                </h3>
                 <section className="info">{content.landingBody}</section>
                 <section className="cta row">
                   <button
