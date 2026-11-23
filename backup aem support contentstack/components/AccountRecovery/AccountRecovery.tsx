@@ -251,21 +251,43 @@ export default function AccountRecovery({
   const [step, setStep] = useState<Step>("unauth");
   const [dialogOpen, setDialogOpen] = useState(true);
   const [dialogView, setDialogView] = useState<DialogView>("default");
+  const [dialogBackView, setDialogBackView] = useState<DialogView>("default");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalUsesTempCopy, setModalUsesTempCopy] = useState(false);
+  const [accountType, setAccountType] = useState<"atvi" | "temp" | "link" | null>(
+    null,
+  );
+  const [tempAccountCreated, setTempAccountCreated] = useState(false);
+  const [tempVerificationRequested, setTempVerificationRequested] =
+    useState(false);
+  const [linkVerificationRequested, setLinkVerificationRequested] =
+    useState(false);
   const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
-  const [accordionOpen, setAccordionOpen] = useState(false);
+  const [issueAccordionOpen, setIssueAccordionOpen] = useState<string | null>(
+    null,
+  );
+  const [loggedInAccordionOpen, setLoggedInAccordionOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [game, setGame] = useState("");
   const [details, setDetails] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [apiError, setApiError] = useState(
+    "Account/profile API is not connected. Login state and linked-account details are placeholders in this preview.",
+  );
+  const [compromiseStep, setCompromiseStep] = useState("");
   const [caseNumber, setCaseNumber] = useState("{{CASENUMBER}}");
   const [successType, setSuccessType] = useState<
     "success" | "exists" | "error"
   >("success");
   const [progress, setProgress] = useState(15);
   const [backSteps, setBackSteps] = useState<Step[]>([]);
+
+  const reportApiUnavailable = (action: string) => {
+    setApiError(
+      `API is not working: ${action} is unavailable in this migration preview.`,
+    );
+  };
 
   const goTo = (nextStep: Step, nextProgress: number) => {
     setBackSteps((previous) => [...previous, step]);
@@ -320,6 +342,7 @@ export default function AccountRecovery({
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
+    reportApiUnavailable("Submitting your account recovery request");
     setSuccessType("error");
     setStep("success");
     setProgress(100);
@@ -389,7 +412,10 @@ export default function AccountRecovery({
                 type="button"
                 className={`back icon btn btn-link ${dialogView === "default" ? "hidden" : ""}`}
                 aria-label="Back"
-                onClick={() => setDialogView("default")}
+                onClick={() => {
+                  setDialogView(dialogBackView);
+                  setSelectedReasons([]);
+                }}
               >
                 ←
               </button>
@@ -420,14 +446,21 @@ export default function AccountRecovery({
                   <button
                     type="button"
                     className="different-account-action btn btn-outline-dark col"
-                    onClick={() => setDialogView("different-account")}
+                    onClick={() => {
+                      setDialogBackView("default");
+                      setDialogView("different-account");
+                    }}
                   >
                     {content.differentAccountAction}
                   </button>
                   <button
                     type="button"
                     className="account-compromised-action btn btn-dark col"
-                    onClick={() => setDialogView("account-compromised")}
+                    onClick={() => {
+                      setSelectedReasons([]);
+                      setDialogBackView("default");
+                      setDialogView("account-compromised");
+                    }}
                   >
                     {content.compromisedAction}
                   </button>
@@ -463,7 +496,10 @@ export default function AccountRecovery({
                 <button
                   type="button"
                   className="link-button acct-compromised-link btn btn-link"
-                  onClick={() => setDialogView("different-account")}
+                  onClick={() => {
+                    setDialogBackView("account-compromised");
+                    setDialogView("different-account");
+                  }}
                 >
                   {content.noneApply}
                 </button>
@@ -497,18 +533,22 @@ export default function AccountRecovery({
                         <div className="panel-heading card-header" role="tab">
                           <h3 className="panel-title">
                             <button
-                              className="collapsed btn btn-link"
+                              className={`${issueAccordionOpen === id ? "" : "collapsed "}btn btn-link`}
                               type="button"
                               data-toggle="collapse"
-                              aria-expanded={accordionOpen && id === "two-factor"}
-                              onClick={() => setAccordionOpen((open) => !open)}
+                              aria-expanded={issueAccordionOpen === id}
+                              onClick={() =>
+                                setIssueAccordionOpen((open) =>
+                                  open === id ? null : id,
+                                )
+                              }
                             >
                               <span className="def-txt">{title}</span>
                               <span className="selected-option inactive" />
                             </button>
                           </h3>
                         </div>
-                        {accordionOpen && id === "two-factor" ? (
+                        {issueAccordionOpen === id ? (
                           <div className="panel-collapse collapse show">
                             <div className="panel-body card-body">{body}</div>
                           </div>
@@ -608,7 +648,21 @@ export default function AccountRecovery({
                 type="button"
                 className="car-button btn btn-dark col"
                 data-redirect="signout"
-                onClick={() => setModalOpen(false)}
+                onClick={() => {
+                  setModalOpen(false);
+                  if (accountType === "temp") {
+                    setTempVerificationRequested(true);
+                  } else if (accountType === "link") {
+                    setLinkVerificationRequested(true);
+                  }
+                  reportApiUnavailable(
+                    accountType === "temp"
+                      ? "Creating or verifying a temporary account"
+                      : accountType === "link"
+                        ? "Linking an account"
+                        : "Signing in",
+                  );
+                }}
               >
                 {content.modalContinue}
               </button>
@@ -622,7 +676,7 @@ export default function AccountRecovery({
           <div className="title-bar">
             <button
               type="button"
-              className={`back-arrow btn btn-link ${backSteps.length ? "display" : ""}`}
+              className={`back-arrow btn btn-link ${backSteps.length && step !== "success" ? "display" : ""}`}
               onClick={goBack}
             >
               {content.asset("back_arrow") ? (
@@ -647,6 +701,11 @@ export default function AccountRecovery({
               {content.errorHeader}
             </h2>
           </div>
+          {apiError ? (
+            <div className="box warning error text-center api-error" role="alert">
+              {apiError}
+            </div>
+          ) : null}
           <div className="prog-wrapper">
             <div
               className="progress-container progress"
@@ -692,6 +751,7 @@ export default function AccountRecovery({
                 data-redirect="login"
                 data-account-type="atvi"
                 onClick={() => {
+                  setAccountType("atvi");
                   setModalUsesTempCopy(false);
                   setModalOpen(true);
                 }}
@@ -742,7 +802,10 @@ export default function AccountRecovery({
                 type="button"
                 className="car-button btn btn-dark col"
                 data-next-step="first-party"
-                onClick={() => goTo("first-party", 30)}
+                onClick={() => {
+                  setCompromiseStep("Partial Compromise - Step 1");
+                  goTo("first-party", 15);
+                }}
               >
                 {content.confirmNo}
               </button>
@@ -750,7 +813,10 @@ export default function AccountRecovery({
                 type="button"
                 className="car-button btn btn-dark col"
                 data-next-step="form"
-                onClick={() => goTo("form", 90)}
+                onClick={() => {
+                  setCompromiseStep("Full Compromise");
+                  goTo("form", 90);
+                }}
               >
                 {content.confirmYes}
               </button>
@@ -805,10 +871,9 @@ export default function AccountRecovery({
                   type="button"
                   className={`car-button fp ${platform.className} btn btn-dark col-md-6`}
                   data-redirect={platform.provider}
-                  onClick={() => {
-                    setModalUsesTempCopy(false);
-                    setModalOpen(true);
-                  }}
+                  onClick={() =>
+                    reportApiUnavailable(`${platform.label} sign-in`)
+                  }
                 >
                   {platform.image ? (
                     <img
@@ -836,7 +901,10 @@ export default function AccountRecovery({
                 type="button"
                 className="car-button btn btn-dark col"
                 data-next-step="unauth"
-                onClick={() => goTo("unauth", 15)}
+                onClick={() => {
+                  setCompromiseStep("Partial Compromise - Step 1");
+                  goTo("unauth", 15);
+                }}
               >
                 {content.noLinkedAccounts}
               </button>
@@ -884,12 +952,16 @@ export default function AccountRecovery({
               <div className="pre-line">{content.loggedInWarning}</div>
             </div>
           </div>
-          <div className={`box accordion ${accordionOpen ? "expanded" : ""}`}>
+          <div
+            className={`box accordion ${loggedInAccordionOpen ? "expanded" : ""}`}
+          >
             <button
               type="button"
               className="accordion-trigger btn btn-link"
-              aria-expanded={accordionOpen}
-              onClick={() => setAccordionOpen((open) => !open)}
+              aria-expanded={loggedInAccordionOpen}
+              onClick={() =>
+                setLoggedInAccordionOpen((open) => !open)
+              }
             >
               {content.asset("dropdown_caret") ? (
                 <img
@@ -907,6 +979,7 @@ export default function AccountRecovery({
                   type="button"
                   className="car-button btn btn-dark col"
                   onClick={() => {
+                    setAccountType("link");
                     setModalUsesTempCopy(false);
                     setModalOpen(true);
                   }}
@@ -922,7 +995,10 @@ export default function AccountRecovery({
               className="car-button btn btn-dark col"
               data-next-step="form"
               data-full-comp="true"
-              onClick={() => goTo("form", 90)}
+              onClick={() => {
+                setCompromiseStep("Full Compromise");
+                goTo("form", 90);
+              }}
             >
               {content.continueToForm}
             </button>
@@ -933,12 +1009,14 @@ export default function AccountRecovery({
           className={`step unauth-temp ${step === "unauth-temp" ? "display" : ""}`}
           data-step-percent="45"
         >
-          <div className="auth-content">
-            <div>{content.tempContent}</div>
-            <div className="box warning error text-center">
-              {content.tempWarning}
+          {tempVerificationRequested ? null : (
+            <div className="auth-content">
+              <div>{content.tempContent}</div>
+              <div className="box warning error text-center">
+                {content.tempWarning}
+              </div>
             </div>
-          </div>
+          )}
           <div className="box">
             <h3 className="title">{content.tempBoxTitle}</h3>
             <div
@@ -949,47 +1027,57 @@ export default function AccountRecovery({
               dangerouslySetInnerHTML={sanitizedHtml(content.tempInstructions)}
             />
           </div>
-          <div className="button-group centered row">
-            <a
-              id="tempAccountLink"
-              target="profileWindow"
-              rel="noreferrer"
-              className="col"
-            >
+          {!tempVerificationRequested ? (
+            <div className="button-group centered row">
+              <a
+                id="tempAccountLink"
+                target="profileWindow"
+                rel="noreferrer"
+                className="col"
+              >
+                <button
+                  type="button"
+                  className="car-button create btn btn-dark"
+                  data-redirect="login"
+                  data-account-type="temp"
+                  onClick={() => {
+                    setAccountType("temp");
+                    setTempAccountCreated(true);
+                    setModalUsesTempCopy(true);
+                    setModalOpen(true);
+                  }}
+                >
+                  {content.tempButton}
+                </button>
+              </a>
+            </div>
+          ) : null}
+          {tempVerificationRequested ? (
+            <div className="button-group centered row">
               <button
                 type="button"
-                className="car-button create btn btn-dark"
-                data-redirect="login"
-                data-account-type="temp"
-                onClick={() => {
-                  setModalUsesTempCopy(true);
-                  setModalOpen(true);
-                }}
+                className="car-button verify btn btn-dark col"
+                data-next-step="logged-in"
+                data-trigger="temp"
+                onClick={() =>
+                  reportApiUnavailable("Verifying the temporary account")
+                }
               >
-                {content.tempButton}
+                {content.tempVerify}
               </button>
-            </a>
-          </div>
-          <div className="button-group centered row">
-            <button
-              type="button"
-              className="car-button verify btn btn-dark col"
-              data-next-step="logged-in"
-              data-trigger="temp"
-              onClick={() => goTo("logged-in", 60)}
-            >
-              {content.tempVerify}
-            </button>
-          </div>
+            </div>
+          ) : null}
         </section>
 
         <section
           className={`step link-account ${step === "link-account" ? "display" : ""}`}
           data-step-percent="60"
         >
-          <div className="box warning error text-center acct-detect">
-            {content.linkWarning}
-          </div>
+          {!linkVerificationRequested ? (
+            <div className="box warning error text-center acct-detect">
+              {content.linkWarning}
+            </div>
+          ) : null}
           <div className="box">
             <h3 className="title">{content.linkBoxTitle}</h3>
             <div
@@ -1006,28 +1094,35 @@ export default function AccountRecovery({
               target="profileWindow"
               rel="noreferrer"
             >
+              {!linkVerificationRequested ? (
+                <button
+                  type="button"
+                  className="car-button link-acct btn btn-dark"
+                  data-redirect="login"
+                  data-account-type="link"
+                  onClick={() => {
+                    setAccountType("link");
+                    setModalUsesTempCopy(false);
+                    setModalOpen(true);
+                  }}
+                >
+                  {content.linkButton}
+                </button>
+              ) : null}
+            </a>
+            {linkVerificationRequested ? (
               <button
                 type="button"
-                className="car-button link-acct btn btn-dark"
-                data-redirect="login"
-                data-account-type="link"
-                onClick={() => {
-                  setModalUsesTempCopy(false);
-                  setModalOpen(true);
-                }}
+                className="car-button link-verify btn btn-dark col"
+                data-next-step="logged-in"
+                data-trigger="link"
+                onClick={() =>
+                  reportApiUnavailable("Verifying linked accounts")
+                }
               >
-                {content.linkButton}
+                {content.linkVerify}
               </button>
-            </a>
-            <button
-              type="button"
-              className="car-button link-verify btn btn-dark col"
-              data-next-step="logged-in"
-              data-trigger="link"
-              onClick={() => goTo("logged-in", 60)}
-            >
-              {content.linkVerify}
-            </button>
+            ) : null}
           </div>
         </section>
 
@@ -1063,7 +1158,9 @@ export default function AccountRecovery({
                 </div>
               </div>
             </div>
-            <div className="note">{content.accountDetailsNote}</div>
+            {tempAccountCreated ? (
+              <div className="note">{content.accountDetailsNote}</div>
+            ) : null}
           </div>
           <form id="submitForm" className="submit-form" onSubmit={submitForm}>
             <div>*{content.requiredText}</div>
@@ -1156,7 +1253,13 @@ export default function AccountRecovery({
             <div className="g-recaptcha" data-sitekey="" aria-disabled="true" />
             <input type="hidden" id="g-cc" name="g-cc" />
             <input type="hidden" name="language" value={content.locale} />
-            <input type="hidden" id="submission-step" name="Submission_Step__c" value="" />
+            <input
+              type="hidden"
+              id="submission-step"
+              name="Submission_Step__c"
+              value={compromiseStep}
+              readOnly
+            />
             <input
               type="hidden"
               id="isUbisoftEnabled"
