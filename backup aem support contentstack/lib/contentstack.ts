@@ -5,6 +5,9 @@ import contentstack, {
   type BaseTerm,
 } from "@contentstack/delivery-sdk";
 
+
+ 
+
 // Importing Contentstack Live Preview utilities and stack SDK
 import ContentstackLivePreview, { IStackSdk } from "@contentstack/live-preview-utils";
 
@@ -55,6 +58,18 @@ export const stack = contentstack.stack({
 
 // Initialize live preview functionality
 export function initLivePreview() {
+  if (typeof window !== "undefined") {
+    const previewWindow = window as Window & {
+      __accountRecoveryPreviewInitialized?: boolean;
+    };
+
+    if (previewWindow.__accountRecoveryPreviewInitialized) {
+      return;
+    }
+
+    previewWindow.__accountRecoveryPreviewInitialized = true;
+  }
+
   ContentstackLivePreview.init({
     ssr: false, // Disabling server-side rendering for live preview
     enable: process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true', // Enabling live preview if specified in environment variables
@@ -162,3 +177,37 @@ export async function getProductsByEfficiency(efficiency: string) {
 
   return entries;
 }
+
+
+
+export async function getAccountRecoveryDetails() {
+  try {
+    const result = await stack
+      .contentType("accountrecovery_details")
+      .entry()
+      .query()
+      .find<Record<string, unknown> & { uid: string }>();
+
+    const entry =
+      result.entries?.find(
+        (candidate) => candidate.uid === "bltf6b3f8e09f0a972a",
+      ) ?? result.entries?.[0];
+
+    if (entry && isPreview) {
+      contentstack.Utils.addEditableTags(
+        entry,
+        "accountrecovery_details",
+        true,
+      );
+    }
+
+    return entry;
+  } catch (error) {
+    console.warn(
+      "Account recovery Contentstack entry is unavailable.",
+      error instanceof Error ? error.message : error,
+    );
+    return undefined;
+  }
+}
+ 

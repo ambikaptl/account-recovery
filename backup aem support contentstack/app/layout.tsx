@@ -36,6 +36,9 @@ export default function RootLayout({
               <Link className="site-nav__link" href="/product">
                 Products
               </Link>
+              <Link className="site-nav__link" href="/account-recovery">
+                Account Recovery
+              </Link>
 
             </div>
           </nav>

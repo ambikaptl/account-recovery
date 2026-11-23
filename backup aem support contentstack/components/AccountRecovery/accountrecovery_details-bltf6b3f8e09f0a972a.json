@@ -1,0 +1,172 @@
+{
+  "title": "ACCOUNT RECOVERY DETAILS",
+  "general": {
+    "banner_text": "ACCOUNT RECOVERY",
+    "banner_bg_image": {
+      "uid": "bltfef15963207a229f",
+      "created_at": "2026-11-18T10:51:38.685Z",
+      "updated_at": "2026-11-18T10:51:38.685Z",
+      "created_by": "csf2680ef3dc02682b",
+      "updated_by": "csf2680ef3dc02682b",
+      "content_type": "image/jpeg",
+      "file_size": "45698",
+      "tags": [],
+      "filename": "account-recovery-header-bg-silver-2x.jpg",
+      "url": "https://eu-images.contentstack.com/v3/assets/blt46eacf701554951d/bltfef15963207a229f/6afd833aea20de6a7124da83/account-recovery-header-bg-silver-2x.jpg",
+      "ACL": [],
+      "is_dir": false,
+      "parent_uid": "blt5c9927c8731e663b",
+      "_version": 1,
+      "title": "account-recovery-header-bg-silver-2x.jpg"
+    },
+    "progress_header_title": "Activision Account Recovery Request",
+    "progress_header_back_button": "Back",
+    "progress_header_start_text": "Start",
+    "progress_header_end_text": "Finish",
+    "is_ubisoft_enable": true
+  },
+  "before_you_proceed_model": {
+    "modal_header": "BEFORE YOU PROCEED…",
+    "modal_content": "If you continue, you will be logged out of the {{EMAIL}} account so you can log in to your hacked Activision account.",
+    "close_button_text": "CANCEL",
+    "logout_button_text": "LOG OUT TO CONTINUE",
+    "create_temp_account_modal_content": "To continue, you will need to log out of the {{EMAIL}} account so you can create a temporary account."
+  },
+  "step1_unauth": {
+    "step_1_content": "If your email address is still active on your hacked Activision account, please log in to it using your email address and password.",
+    "can_t_login_button_text": "I CAN’T LOG IN TO MY ACCOUNT",
+    "login_button_text": "LOG IN TO ACTIVISION ACCOUNT"
+  },
+  "step2_fp_accounts": {
+    "step_2_first_party_content": "If your PlayStation, Xbox, Steam, or Battle.net account is still linked to your hacked Activision account, please log in to one of them below.",
+    "psn_login_button_text": "LOG IN WITH PLAYSTATION",
+    "xbox_login_button_text": "LOG IN WITH XBOX",
+    "steam_login_button_text": "LOG IN WITH STEAM",
+    "battle_net_login_button_text": "LOG IN WITH BATTLE.NET",
+    "no_linked_accounts_button_text": "I DON'T HAVE ANY ACCOUNTS LINKED",
+    "ubisoft_login_button_text": "",
+    "nintendo_login_button_text": ""
+  },
+  "step3_account_confirmed": {
+    "step_3_account_confirmed_content": "It is very important to us that all players safeguard their Activision accounts. If your Activision account was hacked and you need help recovering it, please use the questions and steps to provide your account details and submit an account recovery request. If your request is valid, we will work to get you back to playing with your original progress, stats, and content as quickly as possible.\n\nRequests can take up to 24 hours to process. You’ll be notified via email when your request is complete.",
+    "warning_content": "ATTENTION: This form is for recovering hacked Activision accounts only. If you're having account linking or unlinking issues, please go to Managing Your Activision Account. For issues that aren't related to account recovery, please visit Support Options.",
+    "confirm_account_button_yes": "YES",
+    "confirm_account_button_no": "NO"
+  },
+  "step4_logged_in": {
+    "step_4_logged_in_title": "You're currently logged in to the following account.",
+    "step_4_attention_box_content": "ATTENTION:\n\nYour case will be denied if either of the following occurs:\n\nThe temporary account is created using a disposable email account or an email account that cannot be verified.\nYou link a PlayStation, Xbox, or Battle.net account that was not originally linked to your hacked Activision account.",
+    "accordion_dropdown_text": "I linked the wrong account",
+    "step_4_accordion_content": "Follow these steps to link a different account to your temporary account.\n\n1.Go to the LINKED ACCOUNTS section on your temporary account.\n2.Select UNLINK next to any accounts you need to unlink.\n3.Check the confirmation box and select CONTINUE.\n4.Select LINK next to an account you wish to link.\n5.You will be taken to the account provider’s website. Follow the steps to log in to the account and complete the account linking process.",
+    "link_different_account_button_text": "LINK A DIFFERENT ACCOUNT",
+    "continue_to_form_button_text": "CONTINUE TO THE FORM"
+  },
+  "step5_create_temp_account": {
+    "step_5_title_content": "Since you're unable to log in to the account you need help with, you will need to create a temporary Activision account to submit an account recovery request. You will also need to link a PlayStation, Xbox, or Battle.net account that was previously linked to your hacked Activision account.\n\nThis temporary account will no longer be accessible after your account is recovered, so please do not make any in-game purchases. Progress and purchases cannot be transferred.\n\n",
+    "step_5_small_warning_box_content": "We detected that this account was created more than 3 days ago. Please create a new temporary Activision account that will be used to recover your hacked Activision account.",
+    "step_5_attentnion_box_content": "<p><strong>ATTENTION:</strong></p><p><strong>Your case will be denied if either of the following occurs:</strong></p><ul><li>The temporary account is created using a disposable email account or an email account that cannot be verified.</li><li>You link a PlayStation, Xbox, or Battle.net account that was not originally linked to your hacked Activision account.</li></ul>",
+    "box_list_content": "<p>&nbsp;</p><ol><li>Create a temporary Activision account using a valid email you can access.</li><li>When you reach the <strong>CONNECTED ACCOUNTS</strong> step while creating the account, select an account type (PlayStation, Xbox, or Battle.net) that was linked to your hacked Activision account.</li><li>You will be taken to the account provider's website. Follow the steps to log in to the account and complete the account linking process.</li><li>Return to this page and select <strong>VERIFY TO CONTINUE</strong>.</li></ol>",
+    "create_a_temp_account_button_text": "CREATE A TEMPORARY ACCOUNT",
+    "verify_to_continue_button_text": "VERIFY TO CONTINUE",
+    "account_creation_limit": 3,
+    "warning_box_title_text": "How to create a temporary Activision account"
+  },
+  "step_6_link_accounts": {
+    "step_6_warning_box_content": "We do not detect a linked account. Please link a PlayStation, Xbox, or Battle.net account that was previously linked to your hacked Activision account.",
+    "attention_box_title": "How to link an account",
+    "step_6_first_attention_box_content": "<p><strong>ATTENTION:</strong></p><p><strong>Your case will be denied if either of the following occurs:</strong></p><ul><li>The temporary account is created using a disposable email account or an email account that cannot be verified.</li><li>You link a PlayStation, Xbox, or Battle.net account that was not originally linked to your hacked Activision account.</li></ul>",
+    "step_6_second_attention_box_content": "<p>Follow these steps to link an account to your temporary account.</p><ol><li>Go to the <strong>LINKED ACCOUNTS</strong> section on your temporary account.</li><li>Select <strong>LINK</strong> next to an account you wish to link.</li><li>You will be taken to the account provider's website. Follow the steps to log in to the account and complete the account linking process.</li><li>Return to this page and select <strong>VERIFY TO CONTINUE</strong>.</li></ol>",
+    "link_account_button_text": "LINK AN ACCOUNT",
+    "verify_to_continue_button_text": "VERIFY TO CONTINUE"
+  },
+  "step_final_form": {
+    "account_details_header": "Account Details",
+    "account_details_sub_text": "You're currently logged in to the following account, which has these accounts linked:",
+    "account_details_note_text": "Please note: This temporary account will no longer be accessible after your account is recovered, so please do not make any in-game purchases. Progress and purchases cannot be transferred.",
+    "required_text": "Required Fields",
+    "required_error_text": "This field is required.",
+    "email_main_label": "Email address",
+    "email_sub_label": "Email address that was last used on your hacked Activision account",
+    "email_error_text": "Please enter a valid email address.",
+    "date_main_label": "Date",
+    "date_sub_label": "Date your Activision account was hacked",
+    "date_error_text": "Please enter a valid date.",
+    "affected_games_label": "Affected Game Titles",
+    "game_title": [
+      {
+        "game_title_name": "Call of Duty: Vanguard",
+        "_metadata": { "uid": "cs321e357d796d9544" },
+        "game_title_value": "cod-vg",
+        "show_game_title": true
+      },
+      {
+        "game_title_name": "Call of Duty: Black Ops Cold War",
+        "_metadata": { "uid": "csb7974da14545a184" },
+        "game_title_value": "cod-cw",
+        "show_game_title": true
+      },
+      {
+        "game_title_name": "Call of Duty: Warzone",
+        "_metadata": { "uid": "csfc33a72903aca74d" },
+        "game_title_value": "cod-wz",
+        "show_game_title": true
+      },
+      {
+        "game_title_name": "Call of Duty: Modern Warfare",
+        "_metadata": { "uid": "cs5c4b1a365058c0d7" },
+        "game_title_value": "cod-mf",
+        "show_game_title": true
+      },
+      {
+        "game_title_name": "Call of Duty: Mobile",
+        "_metadata": { "uid": "cs2d965d0f5b03956c" },
+        "game_title_value": "cod-m",
+        "show_game_title": true
+      }
+    ],
+    "affected_game_titles_error_text": "Please select at least one option.",
+    "additional_details_label": "Additional Details",
+    "additional_details_sub_label": "Please describe what happened to the account you wish to recover and provide any additional details that might help us with your request.",
+    "additional_detail_error_text": "This field cannot be empty.",
+    "submit_button_text": "SUBMIT",
+    "submit_error_text": "Our system is currently unable to process account recovery requests. Please try again later."
+  },
+  "success_step": {
+    "success_content": "<p>Your Case Number is <strong>{{CASENUMBER}}</strong></p><p>We received your account recovery request.</p><p>We expect to have your request completed within 24 hours.</p><p>We appreciate your patience.</p><p><strong>Activision Support</strong></p>",
+    "case_already_exists_content": "<p>We’ve detected that you have an open account recovery request with the following email address: <strong>{{EMAIL}}</strong><br /></p><p>Keep an eye on your inbox for updates.&nbsp;We appreciate your patience.</p><p><strong>Activision Support</strong></p>",
+    "error_content": "<p><em>Our system is currently unable to process account recovery requests. Please try again later.</em></p>",
+    "success_header": "YOUR REQUEST HAS BEEN SUBMITTED",
+    "case_already_exists_header": "CASE IN PROGRESS",
+    "error_header": "TRY AGAIN"
+  },
+  "account_box": {
+    "atvi_account_title": "ACTIVISION ACCOUNT",
+    "linked_account_title": "LINKED ACCOUNTS",
+    "system_labels": [
+      {
+        "system_label": "Xbox",
+        "_metadata": { "uid": "cs94e458f693eacb31" },
+        "system_value": "xbl"
+      },
+      {
+        "system_label": "PlayStation",
+        "_metadata": { "uid": "cs22104adcd59fa609" },
+        "system_value": "psn"
+      },
+      {
+        "system_label": "Battle.net",
+        "_metadata": { "uid": "cse3799962267d52b9" },
+        "system_value": "battle"
+      }
+    ]
+  },
+  "tags": [],
+  "locale": "en-us",
+  "uid": "bltf6b3f8e09f0a972a",
+  "created_by": "csf2680ef3dc02682b",
+  "updated_by": "csf2680ef3dc02682b",
+  "created_at": "2026-11-18T10:47:58.698Z",
+  "updated_at": "2026-11-18T12:16:25.029Z",
+  "_version": 27,
+  "_in_progress": false
+}
